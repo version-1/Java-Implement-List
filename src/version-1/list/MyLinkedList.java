@@ -56,6 +56,12 @@ public class MyLinkedList<E> {
         if (isEmpty()) {
             add(data);
         }
+        if (i == 0) {
+            head = new Node<E>();
+            head.data = data;
+            head.next = n;
+            return;
+        }
         while (n != null) {
             if (cursor == i) {
                 Node newNode = new Node();
