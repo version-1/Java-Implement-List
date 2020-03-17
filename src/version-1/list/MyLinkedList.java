@@ -8,6 +8,7 @@ public class MyLinkedList<E> {
         E data;
         Node next;
         Node prev;
+
         Node() {
             this.data = data;
             this.next = next;
@@ -25,7 +26,7 @@ public class MyLinkedList<E> {
 
     public boolean contains(E data) {
         Node n = head.next;
-        while(n != null) {
+        while (n != null) {
             if (n.data == data) {
                 return true;
             }
@@ -37,17 +38,33 @@ public class MyLinkedList<E> {
     public void add(E data) {
         Node n = new Node<E>();
         n.data = data;
+        if (isEmpty()) {
+            head = n;
+            tail = n;
+            size++;
+            return;
+        }
         tail.next = n;
+        n.prev = tail;
+        tail = n;
+        size++;
     }
 
     public void add(int i, E data) {
-        Node n = head.next;
+        Node n = head;
         int cursor = 0;
-        while(n != null) {
+        if (isEmpty()) {
+            add(data);
+        }
+        while (n != null) {
             if (cursor == i) {
-                n.next = new Node();
-                n.next.data = data;
-                n = n.next;
+                Node newNode = new Node();
+                newNode.data = data;
+                newNode.prev = n.prev;
+                n.prev.next = newNode;
+                n.prev = newNode;
+                newNode.next = n;
+                size++;
             }
 
             cursor++;
@@ -57,12 +74,16 @@ public class MyLinkedList<E> {
 
     public E remove(int i) {
         E data = null;
-        Node n = head.next;
+        Node n = head;
         int cursor = 0;
-        while(n != null) {
-            if (cursor == i - 1 && n.next != null) {
-                data = (E)n.next.data;
-                n.next = n.next.next;
+        if (isEmpty()) {
+            return null;
+        }
+        while (n != null) {
+            if (cursor == i) {
+                data = (E) n.data;
+                n.prev.next = n.next;
+               size--;
             }
 
             cursor++;
@@ -72,11 +93,11 @@ public class MyLinkedList<E> {
     }
 
     public E get(int i) {
-        Node n = head.next;
+        Node n = head;
         int cursor = 0;
-        while(n != null) {
+        while (n != null) {
             if (cursor == i) {
-                return (E)n.data;
+                return (E) n.data;
             }
 
             cursor++;
@@ -87,15 +108,13 @@ public class MyLinkedList<E> {
 
     public E set(int i, E newData) {
         E data = null;
-        Node n = head.next;
+        Node n = head;
         int cursor = 0;
-        while(n != null) {
-            if (cursor == i - 1 && n.next != null) {
-                data = (E)n.next.data;
-                Node node = new Node();
-                node.data = newData;
-                n.next = n.next.next;
-                return data;
+        while (n != null) {
+            if (cursor == i) {
+                E tmp = (E)n.data;
+                n.data = newData;
+                return tmp;
             }
 
             cursor++;
@@ -107,12 +126,12 @@ public class MyLinkedList<E> {
     @Override
     public String toString() {
         Node n = head.next;
-        String str = "";
-        while(n != null) {
+        String str = head.data.toString() + "==";
+        while (n != null) {
             if (n.next == null) {
-              str += n.data.toString();
+                str += n.data.toString();
             } else {
-              str += n.data.toString() + "==";
+                str += n.data.toString() + "==";
             }
             n = n.next;
         }
