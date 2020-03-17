@@ -1,4 +1,3 @@
-package collections.list;
 
 // Doubly-Linked list
 public class MyLinkedList<E> {
@@ -9,7 +8,7 @@ public class MyLinkedList<E> {
         E data;
         Node next;
         Node prev;
-        Node(E data, Node next, Node prev) {
+        Node() {
             this.data = data;
             this.next = next;
             this.prev = prev;
@@ -25,38 +24,98 @@ public class MyLinkedList<E> {
     }
 
     public boolean contains(E data) {
-        // TODO
+        Node n = head.next;
+        while(n != null) {
+            if (n.data == data) {
+                return true;
+            }
+            n = n.next;
+        }
         return false;
     }
 
     public void add(E data) {
-        // TODO
+        Node n = new Node<E>();
+        n.data = data;
+        tail.next = n;
     }
 
     public void add(int i, E data) {
-        // TODO
+        Node n = head.next;
+        int cursor = 0;
+        while(n != null) {
+            if (cursor == i) {
+                n.next = new Node();
+                n.next.data = data;
+                n = n.next;
+            }
+
+            cursor++;
+            n = n.next;
+        }
     }
 
     public E remove(int i) {
-        // TODO
-        return null;
+        E data = null;
+        Node n = head.next;
+        int cursor = 0;
+        while(n != null) {
+            if (cursor == i - 1 && n.next != null) {
+                data = (E)n.next.data;
+                n.next = n.next.next;
+            }
+
+            cursor++;
+            n = n.next;
+        }
+        return data;
     }
 
     public E get(int i) {
-        // TODO
+        Node n = head.next;
+        int cursor = 0;
+        while(n != null) {
+            if (cursor == i) {
+                return (E)n.data;
+            }
+
+            cursor++;
+            n = n.next;
+        }
         return null;
     }
 
     public E set(int i, E newData) {
-        // TODO
-        // should return the previous data
+        E data = null;
+        Node n = head.next;
+        int cursor = 0;
+        while(n != null) {
+            if (cursor == i - 1 && n.next != null) {
+                data = (E)n.next.data;
+                Node node = new Node();
+                node.data = newData;
+                n.next = n.next.next;
+                return data;
+            }
+
+            cursor++;
+            n = n.next;
+        }
         return null;
     }
 
     @Override
     public String toString() {
-        // TODO
-        // ex) "Obj0"=="Obj1"==null
-        return super.toString();
+        Node n = head.next;
+        String str = "";
+        while(n != null) {
+            if (n.next == null) {
+              str += n.data.toString();
+            } else {
+              str += n.data.toString() + "==";
+            }
+            n = n.next;
+        }
+        return str;
     }
 }
